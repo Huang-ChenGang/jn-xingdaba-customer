@@ -8,4 +8,6 @@ public interface WechatAppletCustomerDomainService {
     Optional<WechatAppletCustomer> findByOpenId(String openId);
 
     WechatAppletCustomer save(WechatAppletCustomer model);
+
+    WechatAppletCustomer findById(String id);
 }

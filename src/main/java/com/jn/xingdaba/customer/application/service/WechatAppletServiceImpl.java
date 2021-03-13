@@ -2,11 +2,12 @@ package com.jn.xingdaba.customer.application.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jn.core.builder.KeyBuilder;
+import com.jn.xingdaba.customer.api.WechatPhoneRequestData;
 import com.jn.xingdaba.customer.application.dto.WechatAppletCode2SessionResponseDto;
-import com.jn.xingdaba.customer.application.dto.WechatAppletCustomerDto;
+import com.jn.xingdaba.customer.application.dto.WechatAppletPhoneNumberResponseDto;
 import com.jn.xingdaba.customer.domain.model.WechatAppletCustomer;
 import com.jn.xingdaba.customer.domain.service.WechatAppletCustomerDomainService;
+import com.jn.xingdaba.customer.infrastructure.WechatDecryptor;
 import com.jn.xingdaba.customer.infrastructure.config.WechatAppletConfig;
 import com.jn.xingdaba.customer.infrastructure.exception.WechatAppletException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+import static com.jn.xingdaba.customer.infrastructure.exception.CustomerSystemError.GET_WECHAT_PHONE_ERROR;
 import static com.jn.xingdaba.customer.infrastructure.exception.WechatAppletError.CODE2SESSION_ERROR;
 
 @Slf4j
@@ -26,18 +28,15 @@ public class WechatAppletServiceImpl implements WechatAppletService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final WechatAppletCustomerDomainService domainService;
-    private final KeyBuilder keyBuilder;
 
     public WechatAppletServiceImpl(WechatAppletConfig wechatAppletConfig,
                                    RestTemplateBuilder restTemplateBuilder,
                                    ObjectMapper objectMapper,
-                                   WechatAppletCustomerDomainService domainService,
-                                   KeyBuilder keyBuilder) {
+                                   WechatAppletCustomerDomainService domainService) {
         this.wechatAppletConfig = wechatAppletConfig;
         this.restTemplate = restTemplateBuilder.build();
         this.objectMapper = objectMapper;
         this.domainService = domainService;
-        this.keyBuilder = keyBuilder;
     }
 
     @Override
@@ -69,17 +68,39 @@ public class WechatAppletServiceImpl implements WechatAppletService {
             throw new WechatAppletException(CODE2SESSION_ERROR, responseDto.getErrorMessage());
         }
 
-        WechatAppletCustomerDto customerDto;
+        WechatAppletCustomer customerInfo;
         Optional<WechatAppletCustomer> optionalCustomer = domainService.findByOpenId(responseDto.getOpenId());
         if (optionalCustomer.isPresent()) {
-            customerDto = WechatAppletCustomerDto.fromModel(optionalCustomer.get());
+            customerInfo = optionalCustomer.get();
         } else {
-            customerDto = new WechatAppletCustomerDto();
-            customerDto.setId(keyBuilder.getUniqueKey());
-            customerDto.setOpenId(responseDto.getOpenId());
+            customerInfo = new WechatAppletCustomer();
+            customerInfo.setOpenId(responseDto.getOpenId());
         }
-        customerDto.setSessionKey(responseDto.getSessionKey());
+        customerInfo.setSessionKey(responseDto.getSessionKey());
 
-        return domainService.save(WechatAppletCustomerDto.toModel(customerDto)).getId();
+        return domainService.save(customerInfo).getId();
+    }
+
+    @Override
+    public String getPhone(WechatPhoneRequestData requestData) {
+        log.info("get wechat applet phone number for: {}", requestData);
+        WechatAppletCustomer customerInfo = domainService.findById(requestData.getLoginKey());
+
+        String phoneNumber;
+        try {
+            WechatAppletPhoneNumberResponseDto wechatResponse = objectMapper.readValue(
+                    WechatDecryptor.decrypt(requestData.getEncryptedData(), requestData.getIv(), customerInfo.getSessionKey()),
+                    WechatAppletPhoneNumberResponseDto.class);
+            log.info("wechat response: {}", wechatResponse);
+            phoneNumber = wechatResponse.getPhoneNumber();
+        } catch (JsonProcessingException e) {
+            log.error("get wechat phone number error", e);
+            throw new WechatAppletException(GET_WECHAT_PHONE_ERROR);
+        }
+
+        customerInfo.setMobile(phoneNumber);
+        domainService.save(customerInfo);
+
+        return phoneNumber;
     }
 }

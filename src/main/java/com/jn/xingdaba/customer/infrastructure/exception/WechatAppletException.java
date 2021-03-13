@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class WechatAppletException extends JNException {
+    
     public WechatAppletException(@NotNull JNError error) {
         super(error);
     }
