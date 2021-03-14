@@ -39,7 +39,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'com.jn:jn-core-common:2021.2.0-SNAPSHOT'
+    implementation 'com.jn:jn-core-common:2021.3.1-SNAPSHOT'
 
     implementation 'mysql:mysql-connector-java:8.0.21'
 
