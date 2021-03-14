@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jn.xingdaba.customer.api.WechatPhoneRequestData;
 import com.jn.xingdaba.customer.application.dto.WechatAppletCode2SessionResponseDto;
+import com.jn.xingdaba.customer.application.dto.WechatAppletCustomerDto;
 import com.jn.xingdaba.customer.application.dto.WechatAppletPhoneNumberResponseDto;
 import com.jn.xingdaba.customer.domain.model.WechatAppletCustomer;
 import com.jn.xingdaba.customer.domain.service.WechatAppletCustomerDomainService;
@@ -11,6 +12,7 @@ import com.jn.xingdaba.customer.infrastructure.WechatDecryptor;
 import com.jn.xingdaba.customer.infrastructure.config.WechatAppletConfig;
 import com.jn.xingdaba.customer.infrastructure.exception.WechatAppletException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -102,5 +104,13 @@ public class WechatAppletServiceImpl implements WechatAppletService {
         domainService.save(customerInfo);
 
         return phoneNumber;
+    }
+
+    @Override
+    public String save(WechatAppletCustomerDto dto) {
+        log.info("save wechat applet customer info for: {}", dto);
+        WechatAppletCustomer model = domainService.findById(dto.getId());
+        BeanUtils.copyProperties(dto, model);
+        return domainService.save(model).getId();
     }
 }

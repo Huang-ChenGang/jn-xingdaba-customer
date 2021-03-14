@@ -1,6 +1,7 @@
 package com.jn.xingdaba.customer.application.controller;
 
 import com.jn.core.api.ServerResponse;
+import com.jn.xingdaba.customer.api.WechatAppletCustomerSaveRequestData;
 import com.jn.xingdaba.customer.api.WechatPhoneRequestData;
 import com.jn.xingdaba.customer.application.service.WechatAppletService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,15 +9,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/wechat")
-public class WechatAppletController {
+@RequestMapping("/wechat/applet/customers")
+public class WechatAppletCustomerController {
     private final WechatAppletService service;
 
-    public WechatAppletController(WechatAppletService service) {
+    public WechatAppletCustomerController(WechatAppletService service) {
         this.service = service;
     }
 
@@ -28,5 +30,10 @@ public class WechatAppletController {
     @GetMapping("/phone")
     public ServerResponse<String> getPhone(WechatPhoneRequestData requestData) {
         return ServerResponse.success(service.getPhone(requestData));
+    }
+
+    @PostMapping
+    public ServerResponse<String> save(@RequestBody @Validated @NotNull WechatAppletCustomerSaveRequestData requestData) {
+        return ServerResponse.success(service.save(WechatAppletCustomerSaveRequestData.toDto(requestData)));
     }
 }
