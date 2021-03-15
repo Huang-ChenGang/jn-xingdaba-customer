@@ -31,6 +31,9 @@ public class WechatAppletCustomerDomainServiceImpl implements WechatAppletCustom
         if (StringUtils.isEmpty(model.getId())) {
             model.setId(keyBuilder.getUniqueKey());
         }
+        if (StringUtils.isEmpty(model.getIsDelete())) {
+            model.setIsDelete("0");
+        }
 
         return repository.save(model);
     }
