@@ -1,1 +1,4 @@
 rootProject.name = 'jn-xingdaba-customer'
+include 'xingdaba-customer-application'
+include 'xingdaba-customer-api'
+
