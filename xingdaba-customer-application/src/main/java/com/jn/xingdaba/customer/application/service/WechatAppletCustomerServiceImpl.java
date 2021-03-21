@@ -27,7 +27,7 @@ import static com.jn.xingdaba.customer.infrastructure.exception.WechatAppletErro
 
 @Slf4j
 @Service
-public class WechatAppletServiceImpl implements WechatAppletService {
+public class WechatAppletCustomerServiceImpl implements WechatAppletCustomerService {
     private final WechatAppletConfig wechatAppletConfig;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -35,12 +35,12 @@ public class WechatAppletServiceImpl implements WechatAppletService {
     private final CustomerCouponService customerCouponService;
     private final CouponDefineDomainService couponDefineDomainService;
 
-    public WechatAppletServiceImpl(WechatAppletConfig wechatAppletConfig,
-                                   RestTemplateBuilder restTemplateBuilder,
-                                   ObjectMapper objectMapper,
-                                   WechatAppletCustomerDomainService domainService,
-                                   CustomerCouponService customerCouponService,
-                                   CouponDefineDomainService couponDefineDomainService) {
+    public WechatAppletCustomerServiceImpl(WechatAppletConfig wechatAppletConfig,
+                                           RestTemplateBuilder restTemplateBuilder,
+                                           ObjectMapper objectMapper,
+                                           WechatAppletCustomerDomainService domainService,
+                                           CustomerCouponService customerCouponService,
+                                           CouponDefineDomainService couponDefineDomainService) {
         this.wechatAppletConfig = wechatAppletConfig;
         this.restTemplate = restTemplateBuilder.build();
         this.objectMapper = objectMapper;
@@ -124,4 +124,10 @@ public class WechatAppletServiceImpl implements WechatAppletService {
         BeanUtils.copyProperties(dto, model);
         return domainService.save(model).getId();
     }
+
+    @Override
+    public String findOpenIdById(String id) {
+        return domainService.findById(id).getOpenId();
+    }
+
 }
