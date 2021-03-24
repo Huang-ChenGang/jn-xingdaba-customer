@@ -62,7 +62,7 @@ public class WechatAppletCustomerServiceImpl implements WechatAppletCustomerServ
             code2SessionResponse = restTemplate.getForObject(code2SessionUrl, String.class);
         } catch (RestClientException e) {
             log.error("wechat applet code2session error.", e);
-            throw new WechatAppletException(CODE2SESSION_ERROR);
+            throw new WechatAppletException(CODE2SESSION_ERROR, e.getMessage());
         }
         log.info("code2SessionResponse: {}", code2SessionResponse);
         WechatAppletCode2SessionResponseDto responseDto;
@@ -70,7 +70,7 @@ public class WechatAppletCustomerServiceImpl implements WechatAppletCustomerServ
             responseDto = objectMapper.readValue(code2SessionResponse, WechatAppletCode2SessionResponseDto.class);
         } catch (JsonProcessingException e) {
             log.error("wechat applet code2session error.", e);
-            throw new WechatAppletException(CODE2SESSION_ERROR);
+            throw new WechatAppletException(CODE2SESSION_ERROR, e.getMessage());
         }
 
         if (responseDto.getErrorCode() != null && responseDto.getErrorCode() != 0) {

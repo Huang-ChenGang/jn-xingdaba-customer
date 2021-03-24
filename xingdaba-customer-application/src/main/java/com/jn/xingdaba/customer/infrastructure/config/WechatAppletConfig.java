@@ -11,4 +11,5 @@ public class WechatAppletConfig {
     private String appId;
     private String appSecret;
     private String code2SessionUrl;
+    private String getAccessTokenUrl;
 }
