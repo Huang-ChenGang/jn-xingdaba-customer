@@ -46,6 +46,7 @@ subprojects {
             dependency 'mysql:mysql-connector-java:8.0.21'
 
             dependency 'com.jn:jn-core-common:2021.3.1-SNAPSHOT'
+            dependency 'com.jn:xingdaba-pay-api:2021.3.0-SNAPSHOT'
         }
     }
 
