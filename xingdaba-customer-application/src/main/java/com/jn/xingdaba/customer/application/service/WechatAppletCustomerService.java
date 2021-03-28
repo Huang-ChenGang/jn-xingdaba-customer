@@ -1,5 +1,6 @@
 package com.jn.xingdaba.customer.application.service;
 
+import com.jn.xingdaba.customer.api.WechatAppletAssetsCountResponseData;
 import com.jn.xingdaba.customer.api.WechatPhoneRequestData;
 import com.jn.xingdaba.customer.application.dto.WechatAppletCustomerDto;
 
@@ -12,4 +13,6 @@ public interface WechatAppletCustomerService {
     String save(WechatAppletCustomerDto dto);
 
     String findOpenIdById(String id);
+
+    WechatAppletAssetsCountResponseData findAssetsCount(String customerId);
 }

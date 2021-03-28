@@ -52,6 +52,11 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
         domainService.save(customerCoupon);
     }
 
+    @Override
+    public Integer findAvailableCouponCount(String customerId) {
+        return domainService.findByCustomerIdAndCouponState(customerId, "gave").size();
+    }
+
     private CustomerCoupon initSendCoupon(CouponDefine couponDefine) {
         CustomerCoupon customerCoupon = new CustomerCoupon();
         BeanUtils.copyProperties(couponDefine, customerCoupon);

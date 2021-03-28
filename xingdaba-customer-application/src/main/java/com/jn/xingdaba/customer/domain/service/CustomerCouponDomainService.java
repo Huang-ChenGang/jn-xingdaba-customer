@@ -3,6 +3,7 @@ package com.jn.xingdaba.customer.domain.service;
 import com.jn.xingdaba.customer.domain.model.CustomerCoupon;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface CustomerCouponDomainService {
     String save(CustomerCoupon model);
@@ -14,4 +15,6 @@ public interface CustomerCouponDomainService {
     CustomerCoupon findFitCoupon(String customerId, BigDecimal conditionAmount);
 
     CustomerCoupon findById(String id);
+
+    List<CustomerCoupon> findByCustomerIdAndCouponState(String customerId, String couponState);
 }

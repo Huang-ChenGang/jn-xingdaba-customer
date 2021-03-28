@@ -2,6 +2,7 @@ package com.jn.xingdaba.customer.application.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jn.xingdaba.customer.api.WechatAppletAssetsCountResponseData;
 import com.jn.xingdaba.customer.api.WechatPhoneRequestData;
 import com.jn.xingdaba.customer.application.dto.WechatAppletCode2SessionResponseDto;
 import com.jn.xingdaba.customer.application.dto.WechatAppletCustomerDto;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static com.jn.xingdaba.customer.infrastructure.exception.CustomerSystemError.GET_WECHAT_PHONE_ERROR;
@@ -128,6 +130,16 @@ public class WechatAppletCustomerServiceImpl implements WechatAppletCustomerServ
     @Override
     public String findOpenIdById(String id) {
         return domainService.findById(id).getOpenId();
+    }
+
+    @Override
+    public WechatAppletAssetsCountResponseData findAssetsCount(String customerId) {
+        WechatAppletAssetsCountResponseData responseData = new WechatAppletAssetsCountResponseData();
+        responseData.setCouponCount(customerCouponService.findAvailableCouponCount(customerId));
+        responseData.setBalance(BigDecimal.ZERO.stripTrailingZeros());
+        responseData.setStarMoney(BigDecimal.ZERO.stripTrailingZeros());
+        responseData.setInvoiceCount(0);
+        return responseData;
     }
 
 }

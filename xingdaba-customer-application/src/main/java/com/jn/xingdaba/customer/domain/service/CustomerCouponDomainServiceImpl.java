@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -52,6 +53,11 @@ public class CustomerCouponDomainServiceImpl implements CustomerCouponDomainServ
     @Override
     public CustomerCoupon findById(String id) {
         return repository.findById(id).orElseThrow(CouponNotDefineException::new);
+    }
+
+    @Override
+    public List<CustomerCoupon> findByCustomerIdAndCouponState(String customerId, String couponState) {
+        return repository.findByCustomerIdAndCouponState(customerId, couponState);
     }
 
 }

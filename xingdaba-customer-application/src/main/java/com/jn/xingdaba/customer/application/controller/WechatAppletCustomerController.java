@@ -1,6 +1,7 @@
 package com.jn.xingdaba.customer.application.controller;
 
 import com.jn.core.api.ServerResponse;
+import com.jn.xingdaba.customer.api.WechatAppletAssetsCountResponseData;
 import com.jn.xingdaba.customer.api.WechatAppletCustomerSaveRequestData;
 import com.jn.xingdaba.customer.api.WechatPhoneRequestData;
 import com.jn.xingdaba.customer.application.service.WechatAppletCustomerService;
@@ -41,4 +42,10 @@ public class WechatAppletCustomerController {
     public ServerResponse<String> getOpenId(@PathVariable @NotBlank String customerId) {
         return ServerResponse.success(service.findOpenIdById(customerId));
     }
+
+    @GetMapping("/assets-count/{customerId}")
+    public ServerResponse<WechatAppletAssetsCountResponseData> findAssetsCount(@PathVariable @NotBlank String customerId) {
+        return ServerResponse.success(service.findAssetsCount(customerId));
+    }
+
 }

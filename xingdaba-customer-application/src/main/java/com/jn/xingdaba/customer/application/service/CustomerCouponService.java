@@ -13,4 +13,6 @@ public interface CustomerCouponService {
     CustomerCouponDto findFitCoupon(String customerId, BigDecimal conditionAmount);
 
     void useCoupon(String id);
+
+    Integer findAvailableCouponCount(String customerId);
 }
