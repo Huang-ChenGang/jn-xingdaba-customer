@@ -33,6 +33,9 @@ public final class CustomerCouponDto {
     private String isDelete;
 
     public static CustomerCouponDto fromModel(CustomerCoupon model) {
+        if (model == null) {
+            return null;
+        }
         CustomerCouponDto dto = new CustomerCouponDto();
         BeanUtils.copyProperties(model, dto);
         return dto;

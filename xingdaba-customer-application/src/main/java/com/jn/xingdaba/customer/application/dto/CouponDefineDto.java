@@ -33,6 +33,9 @@ public final class CouponDefineDto {
     private String isDelete;
 
     public static CouponDefineDto fromModel(CouponDefine model) {
+        if (model == null) {
+            return null;
+        }
         CouponDefineDto dto = new CouponDefineDto();
         BeanUtils.copyProperties(model, dto);
         return dto;
