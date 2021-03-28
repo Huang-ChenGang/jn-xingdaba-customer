@@ -11,4 +11,6 @@ public interface CustomerCouponRepository extends JpaRepository<CustomerCoupon, 
     Optional<CustomerCoupon> findByCustomerIdAndGiveTypeAndCouponStateAndIsDelete(String customerId, String giveType, String couponState, String isDelete);
 
     Optional<CustomerCoupon> findByCustomerIdAndGiveTypeAndConditionAmountAndValueAmountAndCouponStateAndIsDelete(String customerId, String giveType, BigDecimal conditionAmount, BigDecimal valueAmount, String couponState, String isDelete);
+
+    Optional<CustomerCoupon> findFirstByCustomerIdAndConditionAmountLessThanEqualAndCouponStateAndIsDeleteOrderByConditionAmountDesc(String customerId, BigDecimal conditionAmount, String couponState, String isDelete);
 }

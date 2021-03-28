@@ -1,5 +1,6 @@
 package com.jn.xingdaba.customer.application.service;
 
+import com.jn.xingdaba.customer.application.dto.CustomerCouponDto;
 import com.jn.xingdaba.customer.domain.model.CouponDefine;
 import com.jn.xingdaba.customer.domain.model.CustomerCoupon;
 import com.jn.xingdaba.customer.domain.service.CustomerCouponDomainService;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -36,6 +38,11 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
         if (!domainService.hasMinusCoupon(customerId, couponDefine.getConditionAmount(), couponDefine.getValueAmount())) {
             domainService.save(customerCoupon);
         }
+    }
+
+    @Override
+    public CustomerCouponDto findFitCoupon(String customerId, BigDecimal conditionAmount) {
+        return CustomerCouponDto.fromModel(domainService.findFitCoupon(customerId, conditionAmount));
     }
 
     private CustomerCoupon initSendCoupon(CouponDefine couponDefine) {

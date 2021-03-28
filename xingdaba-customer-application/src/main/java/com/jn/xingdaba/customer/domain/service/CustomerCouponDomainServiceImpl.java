@@ -43,4 +43,9 @@ public class CustomerCouponDomainServiceImpl implements CustomerCouponDomainServ
         return repository.findByCustomerIdAndGiveTypeAndConditionAmountAndValueAmountAndCouponStateAndIsDelete(customerId, "minus", conditionAmount, valueAmount, "gave", "0").isPresent();
     }
 
+    @Override
+    public CustomerCoupon findFitCoupon(String customerId, BigDecimal conditionAmount) {
+        return repository.findFirstByCustomerIdAndConditionAmountLessThanEqualAndCouponStateAndIsDeleteOrderByConditionAmountDesc(customerId, conditionAmount, "gave", "0").orElse(null);
+    }
+
 }

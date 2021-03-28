@@ -10,4 +10,6 @@ public interface CustomerCouponDomainService {
     boolean hasRegisterCoupon(String customerId);
 
     boolean hasMinusCoupon(String customerId, BigDecimal conditionAmount, BigDecimal valueAmount);
+
+    CustomerCoupon findFitCoupon(String customerId, BigDecimal conditionAmount);
 }
