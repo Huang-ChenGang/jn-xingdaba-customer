@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public final class CustomerFitCouponResponseData {
+public final class CustomerCouponResponseData {
 
     private String id;
 
@@ -29,8 +29,11 @@ public final class CustomerFitCouponResponseData {
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     private LocalDateTime validDateEnd;
 
-    public static CustomerFitCouponResponseData fromDto(CustomerCouponDto dto) {
-        CustomerFitCouponResponseData responseData = new CustomerFitCouponResponseData();
+    public static CustomerCouponResponseData fromDto(CustomerCouponDto dto) {
+        if (dto == null) {
+            return null;
+        }
+        CustomerCouponResponseData responseData = new CustomerCouponResponseData();
         BeanUtils.copyProperties(dto, responseData);
         return responseData;
     }

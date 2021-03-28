@@ -1,7 +1,7 @@
 package com.jn.xingdaba.customer.application.controller;
 
 import com.jn.core.api.ServerResponse;
-import com.jn.xingdaba.customer.api.CustomerFitCouponResponseData;
+import com.jn.xingdaba.customer.api.CustomerCouponResponseData;
 import com.jn.xingdaba.customer.application.service.CustomerCouponService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +25,8 @@ public class CustomerCouponController {
     }
 
     @GetMapping("/fit")
-    public ServerResponse<CustomerFitCouponResponseData> findFitCoupon(@NotBlank String customerId, @NotNull BigDecimal conditionAmount) {
+    public ServerResponse<CustomerCouponResponseData> findFitCoupon(@NotBlank String customerId, @NotNull BigDecimal conditionAmount) {
         log.info("find customer fit coupon for customerId: {}, conditionAmount: {}", customerId, conditionAmount);
-        return ServerResponse.success(CustomerFitCouponResponseData.fromDto(service.findFitCoupon(customerId, conditionAmount)));
+        return ServerResponse.success(CustomerCouponResponseData.fromDto(service.findFitCoupon(customerId, conditionAmount)));
     }
 }

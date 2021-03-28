@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,6 +57,14 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
     @Override
     public Integer findAvailableCouponCount(String customerId) {
         return domainService.findByCustomerIdAndCouponState(customerId, "gave").size();
+    }
+
+    @Override
+    public List<CustomerCouponDto> findAvailableCouponList(String customerId) {
+        return domainService.findByCustomerIdAndCouponState(customerId, "gave").stream()
+                .map(CustomerCouponDto::fromModel)
+                .collect(Collectors.toList())
+                ;
     }
 
     private CustomerCoupon initSendCoupon(CouponDefine couponDefine) {
