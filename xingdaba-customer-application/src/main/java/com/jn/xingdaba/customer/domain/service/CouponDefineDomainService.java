@@ -12,4 +12,5 @@ public interface CouponDefineDomainService {
     CouponDefine findByGiveType(String giveType);
 
     CouponDefine findMinusCoupon(BigDecimal conditionAmount);
+
 }

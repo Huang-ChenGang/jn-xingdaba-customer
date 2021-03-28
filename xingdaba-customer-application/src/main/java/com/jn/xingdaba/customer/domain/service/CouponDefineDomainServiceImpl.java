@@ -33,4 +33,5 @@ public class CouponDefineDomainServiceImpl implements CouponDefineDomainService 
     public CouponDefine findMinusCoupon(BigDecimal conditionAmount) {
         return repository.findFirstByGiveTypeAndIsDeleteAndConditionAmountLessThanEqualOrderByConditionAmountDesc("minus", "0", conditionAmount).orElse(null);
     }
+
 }

@@ -3,6 +3,7 @@ package com.jn.xingdaba.customer.domain.service;
 import com.jn.core.builder.KeyBuilder;
 import com.jn.xingdaba.customer.domain.model.CustomerCoupon;
 import com.jn.xingdaba.customer.domain.repository.CustomerCouponRepository;
+import com.jn.xingdaba.customer.infrastructure.exception.CouponNotDefineException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -46,6 +47,11 @@ public class CustomerCouponDomainServiceImpl implements CustomerCouponDomainServ
     @Override
     public CustomerCoupon findFitCoupon(String customerId, BigDecimal conditionAmount) {
         return repository.findFirstByCustomerIdAndConditionAmountLessThanEqualAndCouponStateAndIsDeleteOrderByConditionAmountDesc(customerId, conditionAmount, "gave", "0").orElse(null);
+    }
+
+    @Override
+    public CustomerCoupon findById(String id) {
+        return repository.findById(id).orElseThrow(CouponNotDefineException::new);
     }
 
 }

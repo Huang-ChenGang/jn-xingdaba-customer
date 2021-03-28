@@ -45,6 +45,13 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
         return CustomerCouponDto.fromModel(domainService.findFitCoupon(customerId, conditionAmount));
     }
 
+    @Override
+    public void useCoupon(String id) {
+        CustomerCoupon customerCoupon = domainService.findById(id);
+        customerCoupon.setCouponState("used");
+        domainService.save(customerCoupon);
+    }
+
     private CustomerCoupon initSendCoupon(CouponDefine couponDefine) {
         CustomerCoupon customerCoupon = new CustomerCoupon();
         BeanUtils.copyProperties(couponDefine, customerCoupon);

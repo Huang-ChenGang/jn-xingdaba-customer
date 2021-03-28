@@ -11,4 +11,6 @@ public interface CustomerCouponService {
     void sendMinusCoupon(String customerId, CouponDefine couponDefine);
 
     CustomerCouponDto findFitCoupon(String customerId, BigDecimal conditionAmount);
+
+    void useCoupon(String id);
 }

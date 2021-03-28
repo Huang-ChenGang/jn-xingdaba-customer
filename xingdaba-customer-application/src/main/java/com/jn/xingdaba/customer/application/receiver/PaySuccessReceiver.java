@@ -2,6 +2,7 @@ package com.jn.xingdaba.customer.application.receiver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jn.xingdaba.customer.application.service.CustomerCouponService;
 import com.jn.xingdaba.customer.infrastructure.exception.WechatAppletException;
 import com.jn.xingdaba.pay.api.PaySuccessMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import static com.jn.xingdaba.customer.infrastructure.exception.WechatAppletError.HANDLE_PAY_SUCCESS_ERROR;
 
@@ -17,9 +19,12 @@ import static com.jn.xingdaba.customer.infrastructure.exception.WechatAppletErro
 @Component
 public class PaySuccessReceiver {
     private final ObjectMapper objectMapper;
+    private final CustomerCouponService customerCouponService;
 
-    public PaySuccessReceiver(ObjectMapper objectMapper) {
+    public PaySuccessReceiver(ObjectMapper objectMapper,
+                              CustomerCouponService customerCouponService) {
         this.objectMapper = objectMapper;
+        this.customerCouponService = customerCouponService;
     }
 
     @RabbitListener(bindings = @QueueBinding(
@@ -35,6 +40,10 @@ public class PaySuccessReceiver {
         } catch (JsonProcessingException e) {
             log.error("format message from pay center error.", e);
             throw new WechatAppletException(HANDLE_PAY_SUCCESS_ERROR, e.getMessage());
+        }
+
+        if (StringUtils.hasText(paySuccessMessage.getCouponId())) {
+            customerCouponService.useCoupon(paySuccessMessage.getCouponId());
         }
 
     }
