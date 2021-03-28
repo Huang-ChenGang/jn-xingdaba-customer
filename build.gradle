@@ -47,6 +47,7 @@ subprojects {
 
             dependency 'com.jn:jn-core-common:2021.3.1-SNAPSHOT'
             dependency 'com.jn:xingdaba-pay-api:2021.3.0-SNAPSHOT'
+            dependency 'com.jn:xingdaba-order-api:2021.2.0-SNAPSHOT'
         }
     }
 

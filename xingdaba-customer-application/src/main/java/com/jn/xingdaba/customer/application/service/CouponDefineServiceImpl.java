@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 public class CouponDefineServiceImpl implements CouponDefineService {
@@ -23,5 +25,10 @@ public class CouponDefineServiceImpl implements CouponDefineService {
         log.info("find all coupon define for: {}", requestData);
         Pageable pageable = PageRequest.of(requestData.getPageNo(), requestData.getPageSize());
         return domainService.findAll(pageable).map(CouponDefineDto::fromModel);
+    }
+
+    @Override
+    public CouponDefineDto findMinusCoupon(BigDecimal conditionAmount) {
+        return CouponDefineDto.fromModel(domainService.findMinusCoupon(conditionAmount));
     }
 }

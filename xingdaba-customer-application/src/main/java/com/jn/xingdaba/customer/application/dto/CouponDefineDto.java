@@ -37,4 +37,10 @@ public final class CouponDefineDto {
         BeanUtils.copyProperties(model, dto);
         return dto;
     }
+
+    public static CouponDefine toModel(CouponDefineDto dto) {
+        CouponDefine model = new CouponDefine();
+        BeanUtils.copyProperties(dto, model);
+        return model;
+    }
 }

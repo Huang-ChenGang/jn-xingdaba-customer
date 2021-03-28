@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 public class CustomerCouponDomainServiceImpl implements CustomerCouponDomainService {
@@ -33,7 +35,12 @@ public class CustomerCouponDomainServiceImpl implements CustomerCouponDomainServ
 
     @Override
     public boolean hasRegisterCoupon(String customerId) {
-        return repository.findByCustomerIdAndGiveTypeAndIsDelete(customerId, "reg", "0").isPresent();
+        return repository.findByCustomerIdAndGiveTypeAndCouponStateAndIsDelete(customerId, "reg", "gave", "0").isPresent();
+    }
+
+    @Override
+    public boolean hasMinusCoupon(String customerId, BigDecimal conditionAmount, BigDecimal valueAmount) {
+        return repository.findByCustomerIdAndGiveTypeAndConditionAmountAndValueAmountAndCouponStateAndIsDelete(customerId, "minus", conditionAmount, valueAmount, "gave", "0").isPresent();
     }
 
 }

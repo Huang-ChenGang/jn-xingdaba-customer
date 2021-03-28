@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 public class CouponDefineDomainServiceImpl implements CouponDefineDomainService {
@@ -25,5 +27,10 @@ public class CouponDefineDomainServiceImpl implements CouponDefineDomainService 
     @Override
     public CouponDefine findByGiveType(String giveType) {
         return repository.findByGiveType(giveType).orElseThrow(CouponNotDefineException::new);
+    }
+
+    @Override
+    public CouponDefine findMinusCoupon(BigDecimal conditionAmount) {
+        return repository.findFirstByGiveTypeAndIsDeleteAndConditionAmountLessThanEqualOrderByConditionAmountDesc("minus", "0", conditionAmount).orElse(null);
     }
 }

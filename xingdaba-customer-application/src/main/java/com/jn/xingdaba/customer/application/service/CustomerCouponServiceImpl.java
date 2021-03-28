@@ -20,9 +20,27 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 
     @Override
     public void sendRegisterCoupon(String customerId, CouponDefine couponDefine) {
+        CustomerCoupon customerCoupon = initSendCoupon(couponDefine);
+        customerCoupon.setCustomerId(customerId);
+
+        if (!domainService.hasRegisterCoupon(customerId)) {
+            domainService.save(customerCoupon);
+        }
+    }
+
+    @Override
+    public void sendMinusCoupon(String customerId, CouponDefine couponDefine) {
+        CustomerCoupon customerCoupon = initSendCoupon(couponDefine);
+        customerCoupon.setCustomerId(customerId);
+
+        if (!domainService.hasMinusCoupon(customerId, couponDefine.getConditionAmount(), couponDefine.getValueAmount())) {
+            domainService.save(customerCoupon);
+        }
+    }
+
+    private CustomerCoupon initSendCoupon(CouponDefine couponDefine) {
         CustomerCoupon customerCoupon = new CustomerCoupon();
         BeanUtils.copyProperties(couponDefine, customerCoupon);
-        customerCoupon.setCustomerId(customerId);
         customerCoupon.setCouponState("gave");
 
         if ("day".equals(couponDefine.getValidType())) {
@@ -30,8 +48,6 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
             customerCoupon.setValidDateEnd(customerCoupon.getValidDateBegin().plusDays(couponDefine.getValidDay()));
         }
 
-        if (!domainService.hasRegisterCoupon(customerId)) {
-            domainService.save(customerCoupon);
-        }
+        return customerCoupon;
     }
 }
