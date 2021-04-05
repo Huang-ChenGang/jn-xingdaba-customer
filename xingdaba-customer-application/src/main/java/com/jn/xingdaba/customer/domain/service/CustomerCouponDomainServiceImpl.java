@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,6 +31,12 @@ public class CustomerCouponDomainServiceImpl implements CustomerCouponDomainServ
         }
         if (StringUtils.isEmpty(model.getIsDelete())) {
             model.setIsDelete("0");
+        }
+
+        Optional<CustomerCoupon> oldValue = repository.findById(model.getId());
+        if (oldValue.isPresent()) {
+            model.setCreateTime(oldValue.get().getCreateTime());
+            model.setCreateBy(oldValue.get().getCreateBy());
         }
 
         return repository.save(model).getId();

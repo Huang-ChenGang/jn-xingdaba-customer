@@ -35,6 +35,12 @@ public class WechatAppletCustomerDomainServiceImpl implements WechatAppletCustom
             model.setIsDelete("0");
         }
 
+        Optional<WechatAppletCustomer> oldValue = repository.findById(model.getId());
+        if (oldValue.isPresent()) {
+            model.setCreateTime(oldValue.get().getCreateTime());
+            model.setCreateBy(oldValue.get().getCreateBy());
+        }
+
         return repository.save(model);
     }
 
