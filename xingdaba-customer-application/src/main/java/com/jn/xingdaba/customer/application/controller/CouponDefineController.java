@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Slf4j
@@ -36,5 +37,11 @@ public class CouponDefineController {
     public ServerResponse<String> save(@RequestBody @NotNull @Validated CouponDefineSaveRequestData requestData) {
         log.info("save coupon definition for request data: {}", requestData);
         return ServerResponse.success(service.save(CouponDefineDto.fromRequestData(requestData)));
+    }
+
+    @PostMapping("/{ids}")
+    public ServerResponse<Void> deleteOrRestore(@PathVariable @NotBlank String ids) {
+        service.deleteOrRestore(ids);
+        return ServerResponse.success();
     }
 }

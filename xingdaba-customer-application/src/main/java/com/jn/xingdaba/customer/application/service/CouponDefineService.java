@@ -12,4 +12,6 @@ public interface CouponDefineService {
     CouponDefineDto findMinusCoupon(BigDecimal conditionAmount);
 
     String save(CouponDefineDto dto);
+
+    void deleteOrRestore(String ids);
 }

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -56,6 +58,13 @@ public class CouponDefineDomainServiceImpl implements CouponDefineDomainService 
         }
 
         return repository.save(model).getId();
+    }
+
+    @Override
+    public void deleteOrRestore(List<String> ids) {
+        repository.saveAll(repository.findAllByIdIn(ids).stream()
+                .peek(m -> m.setIsDelete("1".equals(m.getIsDelete()) ? "0" : "1"))
+                .collect(Collectors.toList()));
     }
 
 }

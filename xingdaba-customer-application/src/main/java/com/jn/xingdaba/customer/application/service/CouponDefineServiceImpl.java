@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @Slf4j
 @Service
@@ -35,5 +36,11 @@ public class CouponDefineServiceImpl implements CouponDefineService {
     @Override
     public String save(CouponDefineDto dto) {
         return domainService.save(CouponDefineDto.toModel(dto));
+    }
+
+    @Override
+    public void deleteOrRestore(String ids) {
+        log.info("delete or restore coupon define for: {}", ids);
+        domainService.deleteOrRestore(Arrays.asList(ids.split(",")));
     }
 }
