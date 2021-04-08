@@ -31,4 +31,9 @@ public class CouponDefineServiceImpl implements CouponDefineService {
     public CouponDefineDto findMinusCoupon(BigDecimal conditionAmount) {
         return CouponDefineDto.fromModel(domainService.findMinusCoupon(conditionAmount));
     }
+
+    @Override
+    public String save(CouponDefineDto dto) {
+        return domainService.save(CouponDefineDto.toModel(dto));
+    }
 }

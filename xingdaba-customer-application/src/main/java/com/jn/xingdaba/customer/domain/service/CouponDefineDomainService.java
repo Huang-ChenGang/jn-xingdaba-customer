@@ -13,4 +13,5 @@ public interface CouponDefineDomainService {
 
     CouponDefine findMinusCoupon(BigDecimal conditionAmount);
 
+    String save(CouponDefine model);
 }

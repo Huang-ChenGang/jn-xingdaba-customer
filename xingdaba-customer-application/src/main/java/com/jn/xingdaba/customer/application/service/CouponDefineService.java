@@ -10,4 +10,6 @@ public interface CouponDefineService {
     Page<CouponDefineDto> findAll(CouponDefineRequestData requestData);
 
     CouponDefineDto findMinusCoupon(BigDecimal conditionAmount);
+
+    String save(CouponDefineDto dto);
 }

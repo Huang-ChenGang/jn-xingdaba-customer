@@ -1,5 +1,6 @@
 package com.jn.xingdaba.customer.domain.service;
 
+import com.jn.core.builder.KeyBuilder;
 import com.jn.xingdaba.customer.domain.model.CouponDefine;
 import com.jn.xingdaba.customer.domain.repository.CouponDefineRepository;
 import com.jn.xingdaba.customer.infrastructure.exception.CouponNotDefineException;
@@ -7,16 +8,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class CouponDefineDomainServiceImpl implements CouponDefineDomainService {
     private final CouponDefineRepository repository;
+    private final KeyBuilder keyBuilder;
 
-    public CouponDefineDomainServiceImpl(CouponDefineRepository repository) {
+    public CouponDefineDomainServiceImpl(CouponDefineRepository repository,
+                                         KeyBuilder keyBuilder) {
         this.repository = repository;
+        this.keyBuilder = keyBuilder;
     }
 
     @Override
@@ -32,6 +38,24 @@ public class CouponDefineDomainServiceImpl implements CouponDefineDomainService 
     @Override
     public CouponDefine findMinusCoupon(BigDecimal conditionAmount) {
         return repository.findFirstByGiveTypeAndIsDeleteAndConditionAmountLessThanEqualOrderByConditionAmountDesc("minus", "0", conditionAmount).orElse(null);
+    }
+
+    @Override
+    public String save(CouponDefine model) {
+        if (StringUtils.isEmpty(model.getId())) {
+            model.setId(keyBuilder.getUniqueKey());
+        }
+        if (StringUtils.isEmpty(model.getIsDelete())) {
+            model.setIsDelete("0");
+        }
+
+        Optional<CouponDefine> oldValue = repository.findById(model.getId());
+        if (oldValue.isPresent()) {
+            model.setCreateTime(oldValue.get().getCreateTime());
+            model.setCreateBy(oldValue.get().getCreateBy());
+        }
+
+        return repository.save(model).getId();
     }
 
 }

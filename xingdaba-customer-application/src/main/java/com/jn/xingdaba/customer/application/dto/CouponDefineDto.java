@@ -1,5 +1,6 @@
 package com.jn.xingdaba.customer.application.dto;
 
+import com.jn.xingdaba.customer.api.CouponDefineSaveRequestData;
 import com.jn.xingdaba.customer.domain.model.CouponDefine;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -45,5 +46,11 @@ public final class CouponDefineDto {
         CouponDefine model = new CouponDefine();
         BeanUtils.copyProperties(dto, model);
         return model;
+    }
+
+    public static CouponDefineDto fromRequestData(CouponDefineSaveRequestData requestData) {
+        CouponDefineDto dto = new CouponDefineDto();
+        BeanUtils.copyProperties(requestData, dto);
+        return dto;
     }
 }
