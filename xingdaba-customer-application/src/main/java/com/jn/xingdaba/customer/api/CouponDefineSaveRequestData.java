@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public final class CouponDefineSaveRequestData {
@@ -31,10 +31,10 @@ public final class CouponDefineSaveRequestData {
     private Integer validDay;
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private LocalDateTime validDateBegin;
+    private LocalDate validDateBegin;
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private LocalDateTime validDateEnd;
+    private LocalDate validDateEnd;
 
     @NotBlank(message = "赠送类型不能为空")
     private String giveType;

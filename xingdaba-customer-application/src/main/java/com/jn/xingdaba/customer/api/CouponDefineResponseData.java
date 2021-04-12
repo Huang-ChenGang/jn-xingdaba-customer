@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jn.xingdaba.customer.application.dto.CouponDefineDto;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public final class CouponDefineResponseData {
@@ -26,13 +25,11 @@ public final class CouponDefineResponseData {
 
     private Integer validDay;
 
-    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime validDateBegin;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    private LocalDate validDateBegin;
 
-    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime validDateEnd;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    private LocalDate validDateEnd;
 
     private String giveType;
 

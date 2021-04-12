@@ -6,7 +6,7 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public final class CouponDefineDto {
@@ -25,9 +25,9 @@ public final class CouponDefineDto {
 
     private Integer validDay;
 
-    private LocalDateTime validDateBegin;
+    private LocalDate validDateBegin;
 
-    private LocalDateTime validDateEnd;
+    private LocalDate validDateEnd;
 
     private String giveType;
 

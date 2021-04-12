@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -30,9 +31,9 @@ public class CouponDefine {
 
     private Integer validDay;
 
-    private LocalDateTime validDateBegin;
+    private LocalDate validDateBegin;
 
-    private LocalDateTime validDateEnd;
+    private LocalDate validDateEnd;
 
     private String giveType;
 
